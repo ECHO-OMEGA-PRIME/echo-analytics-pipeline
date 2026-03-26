@@ -1,0 +1,77 @@
+name = "echo-analytics-pipeline"
+main = "src/index.ts"
+compatibility_date = "2024-09-23"
+compatibility_flags = ["nodejs_compat"]
+
+# D1 for analytics data warehouse
+[[d1_databases]]
+binding = "DB"
+database_name = "echo-analytics-pipeline"
+database_id = "39972281-f756-4760-99b8-96f73124f6b0"
+
+# KV for hot cache, dashboards, computed metrics
+[[kv_namespaces]]
+binding = "CACHE"
+id = "4d5d04f604924c34adf8f0dceb71c86d"
+
+# ── Data Source Bindings ────────────────────────────────────────────────────
+[[services]]
+binding = "SHARED_BRAIN"
+service = "echo-shared-brain"
+
+[[services]]
+binding = "SWARM_BRAIN"
+service = "echo-swarm-brain"
+
+[[services]]
+binding = "ENGINE_RUNTIME"
+service = "echo-engine-runtime"
+
+[[services]]
+binding = "KNOWLEDGE_FORGE"
+service = "echo-knowledge-forge"
+
+[[services]]
+binding = "FLEET_COMMANDER"
+service = "echo-fleet-commander"
+
+[[services]]
+binding = "DAEMON"
+service = "echo-autonomous-daemon"
+
+[[services]]
+binding = "BUILD_ORCHESTRATOR"
+service = "echo-build-orchestrator"
+
+# ── Bot Data Sources ────────────────────────────────────────────────────────
+[[services]]
+binding = "X_BOT"
+service = "echo-x-bot"
+
+[[services]]
+binding = "LINKEDIN"
+service = "echo-linkedin"
+
+[[services]]
+binding = "TELEGRAM"
+service = "echo-telegram"
+
+[[services]]
+binding = "REDDIT"
+service = "echo-reddit-bot"
+
+# ── Output Bindings ─────────────────────────────────────────────────────────
+[[services]]
+binding = "OMNISYNC"
+service = "omniscient-sync"
+
+# Cron triggers — analytics aggregation cycles
+[triggers]
+crons = [
+  "*/15 * * * *",   # Every 15 min: real-time metrics snapshot
+  "0 * * * *",      # Hourly: full aggregation cycle
+  "0 */6 * * *",    # Every 6h: trend computation + anomaly detection
+  "0 8 * * *",      # Daily 8am UTC: daily roll-up + KPI report
+  "0 7 * * MON",    # Weekly Monday: week-over-week analysis
+  "0 6 1 * *",      # Monthly 1st: monthly business report
+]
