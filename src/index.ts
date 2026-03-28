@@ -1059,7 +1059,8 @@ async function handleRequest(request: Request, env: Env): Promise<Response> {
   }
 
   // Health — no auth required
-  if (path === '/health') {
+    if (path === '/') return json({ service: 'echo-analytics-pipeline', status: 'operational' });
+if (path === '/health') {
     const lastCollection = await env.CACHE.get('collection:latest', 'json') as Record<string, unknown> | null;
     return json({
       status: 'ok',
